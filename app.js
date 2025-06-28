@@ -12,23 +12,19 @@ async function sendMessage() {
   chatBox.scrollTop = chatBox.scrollHeight;
 
   try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch("/api/chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer ضع_مفتاحك_هنا"
       },
-      body: JSON.stringify({
-        model: "gpt-4",
-        messages: [{ role: "user", content: userText }]
-      })
+      body: JSON.stringify({ message: userText }),
     });
 
     const data = await response.json();
-    const botReply = data.choices?.[0]?.message?.content || "لم أفهم سؤالك، يا زيريوس.";
+    const botReply = data.reply || "زيريوس الرابع لا يرد الآن.";
     chatBox.innerHTML += `<div><b>زيريوس الرابع:</b> ${botReply}</div>`;
     chatBox.scrollTop = chatBox.scrollHeight;
   } catch (err) {
-    chatBox.innerHTML += `<div><b>زيريوس الرابع:</b> حصل خطأ في الاتصال بالذكاء الاصطناعي.</div>`;
+    chatBox.innerHTML += `<div><b>زيريوس الرابع:</b> حصل خطأ في الاتصال بالخادم.</div>`;
   }
 }
